@@ -62,7 +62,94 @@ function fetchProductList() {
 }
 
 function fetchOneProduct($id) {
-    // function body
+
+    // For some reason id is +1 of the one we clicked. decrement to get the correct id.
+     $id--
+     
+    console.log("[+] fetchOneProduct")
+
+    
+    var settings = {
+        url: "http://18.220.85.60/api/GetProduct?product_id="+$id,
+        method: "GET",
+        dataType: 'json',
+        contentType: 'text/plain',
+        data: {"product_id":$id},
+      };
+
+    console.log(settings.url)
+
+    $.ajax(settings).done(function (response) {
+        product = response.data.List[$id]
+
+        productHTML = '' +
+                    '    <div id="product' + product['id'] + '" class="col-sm-6 col-md-6 col-lg-9 mt-4">\n' +
+                    '        <div class="product-card">\n' +
+                    '            <div class="row no-gutters">\n' +
+                    '' +
+                    '                <div style="background: #868e96;" class="col-sm-4">\n' +
+                    '                    <img src="'+product['image']+'"></img>\n' +
+                    '                </div>\n' +
+                    '' +
+                    '                <div class="col-sm-7">\n' +
+                    '                    <div class="card">\n' +
+                    '                        <h5 class="card-title">\n' +
+                    '                           ' + product['title'].substring(0,15) + '...\n' +
+                    '                        </h5>\n' +
+                    '' +
+                    '                       <div class="card-text">\n' +
+                    '                           <a href="#" class="btn btn-primary stretched-link">' + 10 + ' comments</a>\n' +
+                    '                       </div>\n' +
+                    '' +
+                    '                        <p class="card-text">\n' + 
+                    '                           <span style="font-size: 0.9rem">' + product['title'] + '</span>\n' +
+                    '                        </p>\n' +
+                    '' +
+                    '                       <div class="card-text">\n' +
+                    '                               <p style="margin-bottom: 0.1rem">\n' + 
+                    '                                   <span style="font-size: 1.03rem">CURRENT PRICE: </span>\n' + 
+                    '                                   <span style="color: gold">' + product['price'] + '</span>\n' + 
+                    '                               </p>\n' +
+                    '                               <p style="margin-bottom: 0.1rem">\n' +
+                    '                                   <span style="font-size: 1.01rem">SCREEN SIZE: </span>\n' +
+                    '                                   <span style="color: gold">' + product['screen_size'] + '</span>\n' +
+                    '                               </p>\n' +
+                    '                               <p style="margin-bottom: 0.1rem">\n' +
+                    '                                   <span style="font-size: 1.01rem">WEIGHT: </span>\n' +
+                    '                                   <span style="color: gold">' + product['item_weight'] + '</span>\n' +
+                    '                               </p>\n' +
+                    '                               <p style="margin-bottom: 0.1rem">\n' +
+                    '                                   <span style="font-size: 1.01rem">CAMERA: </span>\n' +
+                    '                                   <span style="color: gold">' + product['camera_description'] + '</span></p>\n' +
+                    '                               <p style="margin-bottom: 0.1rem">\n' +
+                    '                                   <span style="font-size: 1.01rem">OPERATING SYSTEM: </span>\n' +
+                    '                                   <span style="color: gold">' + product['operating_system'] + '</span>\n' +
+                    '                               </p>\n' +
+                    '                       </div>\n' +
+                    '' +    
+                    '                       <div class="card-text">\n' +
+                    '                           <a href="#" class="btn btn-primary stretched-link">Submit Comment</a>\n' +
+                    '                       </div>\n' +
+                    '' +
+                    '                    </div>\n' +
+                    '                </div>\n' +
+                    '' +
+                    '            </div>\n' +
+                    '        </div>\n' +
+                    '    </div>';
+
+        
+        $('#items').html(productHTML);
+
+
+
+    }).fail(function(response) {
+        alert("Error while fetching data.");
+    }).always(function(response) {
+    });
+    
+    console.log("[-] fetchOneProduct");
+
 }
 
 function fetchComments($id) {
